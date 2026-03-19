@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Clase: Entry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clase <code>Entry</code></h1>
+            <p class="subtitle">Entidad fundamental para la gestión de entradas de datos con soporte de metadatos.</p>
+        </header>
+
+        <section class="definition">
+            <h2>Definición</h2>
+            <p>La clase <code>Entry</code> utiliza <code>@dataclass</code> para representar una entrada de contenido enriquecida con identificadores únicos, marcas de tiempo y etiquetas.</p>
+        </section>
+
+        <section class="attributes">
+            <h2>Atributos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Atributo</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>content</code></td>
+                        <td><code>str</code></td>
+                        <td>El cuerpo principal del contenido de la entrada.</td>
+                    </tr>
+                    <tr>
+                        <td><code>title</code></td>
+                        <td><code>Optional[str]</code></td>
+                        <td>Título opcional para la entrada.</td>
+                    </tr>
+                    <tr>
+                        <td><code>tags</code></td>
+                        <td><code>List[str]</code></td>
+                        <td>Lista de etiquetas (tags) asociadas.</td>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td><code>str</code></td>
+                        <td>Identificador único generado mediante UUID4.</td>
+                    </tr>
+                    <tr>
+                        <td><code>created_at</code></td>
+                        <td><code>datetime</code></td>
+                        <td>Fecha y hora de creación automática.</td>
+                    </tr>
+                    <tr>
+                        <td><code>updated_at</code></td>
+                        <td><code>Optional[datetime]</code></td>
+                        <td>Fecha y hora de la última modificación.</td>
+                    </tr>
+                    <tr>
+                        <td><code>metadata</code></td>
+                        <td><code>Dict[str, Any]</code></td>
+                        <td>Diccionario flexible para datos adicionales.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="methods">
+            <h2>Métodos</h2>
+            <div class="method-card">
+                <h3><code>update_content(new_content: str)</code></h3>
+                <p>Actualiza el contenido principal de la entrada y registra automáticamente la fecha actual en el atributo <code>updated_at</code>.</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
