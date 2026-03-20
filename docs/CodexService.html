@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación CodexService</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Documentación API</h2>
+        <nav>
+            <a href="#overview" class="active">Resumen</a>
+            <a href="#methods">Métodos Públicos</a>
+            <a href="#internal">Lógica Interna</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>CodexService</h1>
+            <p class="subtitle">Servicio de dominio para la gestión y normalización del conocimiento en el Códice.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Descripción General</h2>
+            <p>El <code>CodexService</code> actúa como la capa de lógica de negocio, coordinando las interacciones entre las entidades de conocimiento (<code>Entry</code>) y su persistencia en el <code>KnowledgeRepository</code>.</p>
+            
+            <div class="method-box">
+                <strong>Inyección de Dependencias:</strong> Requiere una implementación de <code>KnowledgeRepository</code> para funcionar.
+            </div>
+        </section>
+
+        <section id="methods">
+            <h2>Métodos Principales (Casos de Uso)</h2>
+
+            <div class="method-card">
+                <h3>create_page(title, content, tags)</h3>
+                <p>Crea una nueva entrada validando que el título no esté vacío y normalizando las etiquetas antes de la ingesta.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>edit_page(entry_id, new_content)</h3>
+                <p>Actualiza el contenido de una página existente e incrementa automáticamente el contador de auditoría <code>edit_count</code>.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>connect_pages(from_id, to_id, connection_type)</h3>
+                <p>Establece un vínculo entre dos nodos. Valida la existencia de ambos y evita la autorreferencia.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete_page(entry_id)</h3>
+                <p>Elimina una página del sistema, asegurando la integridad mediante la limpieza previa de todas sus relaciones.</p>
+            </div>
+        </section>
+
+        <section id="internal">
+            <h2>Reglas de Negocio e Integridad</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Proceso</th>
+                        <th>Regla Aplicada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ingesta</strong></td>
+                        <td><code>_normalize_tags</code>: Limpieza de espacios y conversión a minúsculas.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duplicados</strong></td>
+                        <td>Lanza <code>ValueError</code> si el ID ya existe en el repositorio.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relaciones</strong></td>
+                        <td>Verifica <code>check_relation</code> antes de intentar desconectar nodos.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="repository">
+            <header>
+                <h1>KnowledgeRepository</h1>
+            </header>
+            <p>Interfaz de persistencia utilizada por el servicio para operaciones de lectura y escritura.</p>
+        </section>
+    </main>
+
+</body>
+</html>

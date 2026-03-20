@@ -1,0 +1,184 @@
+/* Variables de diseño */
+:root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --sidebar-bg: #1e293b;
+    --text-main: #334155;
+    --text-bold: #0f172a;
+    --code-color: #ef4444;
+    --code-bg: #f1f5f9;
+    --border: #e2e8f0;
+    --radius: 8px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: white;
+    padding: 2rem 1.5rem;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar nav a {
+    display: block;
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.sidebar nav a:hover { color: white; }
+.sidebar nav a.active { color: var(--primary); font-weight: 600; }
+
+/* Contenido Principal */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 3rem 4rem;
+    max-width: 1000px;
+}
+
+header {
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-size: 2.25rem;
+    color: var(--text-bold);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+}
+
+/* Tarjetas y Secciones */
+section {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--text-bold);
+    margin-top: 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+th {
+    text-align: left;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #64748b;
+    padding: 0.75rem;
+    border-bottom: 2px solid var(--border);
+}
+
+td {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+}
+
+/* Componentes de código */
+code {
+    font-family: 'Fira Code', 'Menlo', monospace;
+    background-color: var(--code-bg);
+    color: var(--code-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.method-box {
+    background: #f8fafc;
+    border-left: 4px solid var(--primary);
+    padding: 1.25rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main-content { margin-left: 0; padding: 2rem; }
+}
+/* Añade esto a tu style.css anterior */
+
+.method-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.method-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.method-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+}
+
+.method-card p {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* Estilo para indicar que es una Interfaz/Abstracta */
+#repository header h1::after {
+    content: "ABSTRACT";
+    font-size: 0.6rem;
+    background: #64748b;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 10px;
+}

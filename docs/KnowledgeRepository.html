@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowledgeRepository Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="repository">
+
+    <aside class="sidebar">
+        <h2>Documentation</h2>
+        <nav>
+            <a href="#" class="active">KnowledgeRepository</a>
+            <a href="#">Entry Model</a>
+            <a href="#">Relation Model</a>
+            <a href="#">Storage Engines</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>KnowledgeRepository</h1>
+            <p class="subtitle">Abstract Base Class defining the standard interface for knowledge persistence and retrieval.</p>
+        </header>
+
+        <section>
+            <h2>Overview</h2>
+            <p>The <code>KnowledgeRepository</code> serves as the primary abstraction layer for storing <code>Entry</code> objects and managing their metadata. Implementations must handle the physical storage logic (SQL, NoSQL, or Vector stores).</p>
+        </section>
+
+        <section>
+            <h2>Methods</h2>
+
+            <div class="method-card">
+                <h3>save(entry: Entry) -> None</h3>
+                <p>Persists a new entry or updates an existing one within the repository.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_id(entry_id: str) -> Optional[Entry]</h3>
+                <p>Retrieves a specific entry by its unique identifier. Returns <code>None</code> if not found.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>find_by_tag(tag: str) -> List[Entry]</h3>
+                <p>Searches and returns a list of all entries associated with the specified tag.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete(entry_id: str) -> bool</h3>
+                <p>Removes an entry from the repository based on its ID. Returns <code>True</code> if the deletion was successful.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>add_relation(relation: Relation) -> None</h3>
+                <p>Establishes a link between two existing entries using a <code>Relation</code> object.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>remove_relation(relation: Relation) -> None</h3>
+                <p>Severs an existing link between entries based on the provided relation details.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Usage Example</h2>
+            <div class="method-box">
+                <code>
+                    repo = MySqlKnowledgeRepository()<br>
+                    entry = repo.get_by_id("12345")<br>
+                    if entry: print(entry.content)
+                </code>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

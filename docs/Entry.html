@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Clase: Entry</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Navegación</h2>
+        <nav>
+            <a href="#overview" class="active">Vista General</a>
+            <a href="#attributes">Atributos</a>
+            <a href="#methods">Métodos</a>
+            <a href="#example">Ejemplo de Uso</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header id="overview">
+            <h1>Class Entry</h1>
+            <p class="subtitle">Entidad base para la gestión de contenidos y metadatos dinámicos.</p>
+        </header>
+
+        <section id="attributes">
+            <h2>Atributos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>content</code></td>
+                        <td><code>str</code></td>
+                        <td>El cuerpo de texto principal de la entrada.</td>
+                    </tr>
+                    <tr>
+                        <td><code>title</code></td>
+                        <td><code>Optional[str]</code></td>
+                        <td>Título opcional para identificar la entrada.</td>
+                    </tr>
+                    <tr>
+                        <td><code>tags</code></td>
+                        <td><code>List[str]</code></td>
+                        <td>Lista de etiquetas para categorización (Default: empty list).</td>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td><code>str</code></td>
+                        <td>Identificador único universal (UUID v4).</td>
+                    </tr>
+                    <tr>
+                        <td><code>created_at</code></td>
+                        <td><code>datetime</code></td>
+                        <td>Marca de tiempo de creación automática.</td>
+                    </tr>
+                    <tr>
+                        <td><code>updated_at</code></td>
+                        <td><code>Optional[datetime]</code></td>
+                        <td>Fecha de la última modificación (Nulo si no se ha editado).</td>
+                    </tr>
+                    <tr>
+                        <td><code>metadata</code></td>
+                        <td><code>Dict[str, Any]</code></td>
+                        <td>Diccionario flexible para datos adicionales.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="methods">
+            <h2>Métodos</h2>
+            
+            <div class="method-card">
+                <h3>update_content(new_content: str)</h3>
+                <p>Actualiza el contenido de la entrada y registra automáticamente la fecha de modificación en <code>updated_at</code>.</p>
+            </div>
+            
+            <div class="method-box" style="margin-top: 1rem;">
+                <strong>Nota:</strong> Los campos <code>id</code> y <code>created_at</code> se gestionan automáticamente mediante <code>field(default_factory=...)</code>.
+            </div>
+        </section>
+
+        <section id="example">
+            <h2>Implementación</h2>
+            <pre style="background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto;">
+<code>@dataclass
+class Entry:
+    content: str
+    title: Optional[str] = None
+    # ... (resto del código)</code></pre>
+        </section>
+    </main>
+
+</body>
+</html>

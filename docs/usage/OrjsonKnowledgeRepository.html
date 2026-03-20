@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Uso: OrjsonKnowledgeRepository</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h2::before {
+            content: "📚";
+            font-size: 1.3rem;
+        }
+
+        .section:nth-child(2) h2::before {
+            content: "🔧";
+        }
+
+        .section:nth-child(3) h2::before {
+            content: "💾";
+        }
+
+        .section:nth-child(4) h2::before {
+            content: "🔗";
+        }
+
+        .section:nth-child(5) h2::before {
+            content: "🔍";
+        }
+
+        .description {
+            color: #555;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #9cdcfe;
+            margin-bottom: -1rem;
+        }
+
+        .inline-code {
+            background: #f0f0f0;
+            color: #d14;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .section {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OrjsonKnowledgeRepository</h1>
+            <p>Guía de uso completa para gestión de conocimiento persistente</p>
+        </div>
+        
+        <div class="content">
+            <!-- Sección 1: Basic Setup -->
+            <div class="section">
+                <h2>Configuración Básica</h2>
+                <div class="description">
+                    Primero, asegúrate de tener instalada la librería <span class="inline-code">orjson</span> en tu entorno. 
+                    Luego, inicializa el repositorio especificando una ruta de almacenamiento.
+                </div>
+                <div class="code-header">Python</div>
+                <div class="code-block">
+                    <pre>from capsula.adapters.OrjsonKnowledgeRepository import OrjsonKnowledgeRepository
+from capsula.core import Entry, Relation
+
+# Initialize the repository (defaults to ./data/codex)
+repo = OrjsonKnowledgeRepository(storage_path="./my_knowledge_base")</pre>
+                </div>
+                <div class="note">
+                    <strong>💡 Nota:</strong> El repositorio maneja automáticamente la serialización de dataclasses de Python y objetos datetime.
+                </div>
+            </div>
+
+            <!-- Sección 2: Saving and Retrieving Entries -->
+            <div class="section">
+                <h2>Guardar y Recuperar Entradas</h2>
+                <div class="description">
+                    El repositorio maneja automáticamente la serialización de dataclasses de Python y objetos datetime.
+                </div>
+                <div class="code-header">Python</div>
+                <div class="code-block">
+                    <pre># Create a new entry
+new_note = Entry(
+    title="Atomic Habits",
+    content="Small changes lead to remarkable results.",
+    tags=["productivity", "books"]
+)
+
+# Persist to disk
+repo.save(new_note)
+
+# Retrieve by ID
+retrieved_note = repo.get_by_id(new_note.id)
+print(f"Loaded: {retrieved_note.title}")</pre>
+                </div>
+            </div>
+
+            <!-- Sección 3: Managing Relations -->
+            <div class="section">
+                <h2>Gestionar Relaciones</h2>
+                <div class="description">
+                    Las relaciones se almacenan en un archivo dedicado <span class="inline-code">relations.json</span> dentro de tu directorio de almacenamiento.
+                </div>
+                <div class="code-header">Python</div>
+                <div class="code-block">
+                    <pre># Create a second entry
+another_note = Entry(title="Deep Work", content="Focus without distraction.")
+repo.save(another_note)
+
+# Create a relationship between them
+link = Relation(
+    from_id=new_note.id, 
+    to_id=another_note.id, 
+    connection_type="related_reading"
+)
+
+# Save the relation
+repo.add_relation(link)
+
+# Remove a specific relation
+# repo.remove_relation(link)</pre>
+                </div>
+            </div>
+
+            <!-- Sección 4: Searching and Deleting -->
+            <div class="section">
+                <h2>Buscar y Eliminar</h2>
+                <div class="description">
+                    Puedes filtrar entradas por etiquetas o eliminarlas por completo. Al eliminar una entrada, se limpian automáticamente las relaciones asociadas.
+                </div>
+                <div class="code-header">Python</div>
+                <div class="code-block">
+                    <pre># Find all entries with the 'productivity' tag
+productivity_notes = repo.find_by_tag("productivity")
+
+# Delete an entry (this removes the .json file and cleans relations.json)
+success = repo.delete(new_note.id)
+if success:
+    print("Entry and its relations successfully removed.")</pre>
+                </div>
+                <div class="note">
+                    <strong>⚠️ Importante:</strong> La eliminación de una entrada también elimina automáticamente todas las relaciones asociadas para mantener la integridad de los datos.
+                </div>
+            </div>
+
+            <!-- Sección adicional: Características -->
+            <div class="section">
+                <h2>Características Principales</h2>
+                <div class="description">
+                    <ul style="margin-left: 1.5rem; color: #555;">
+                        <li>✅ Serialización automática de dataclasses y objetos datetime</li>
+                        <li>✅ Almacenamiento persistente en archivos JSON</li>
+                        <li>✅ Gestión automática de relaciones entre entradas</li>
+                        <li>✅ Búsqueda por etiquetas (tags)</li>
+                        <li>✅ Limpieza automática de relaciones al eliminar entradas</li>
+                        <li>✅ Alto rendimiento gracias a la librería orjson</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
