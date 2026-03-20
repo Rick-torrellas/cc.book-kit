@@ -4,11 +4,11 @@ from datetime import datetime
 from typing import List, Optional
 from dataclasses import dataclass, field
 
-from CapsuleCore_book.capsule.SQLiteKnowledgeRepository import SQLiteKnowledgeRepository
+from CapsuleCore_book.capsule.SQLiteAdapter import SQLiteAdapter
 
 
 # --- Importa aquí tus clases reales ---
-# from tu_modulo import SQLiteKnowledgeRepository, Entry, Relation
+# from tu_modulo import SQLiteAdapter, Entry, Relation
 
 
 @dataclass
@@ -42,7 +42,7 @@ def temp_db(tmp_path):
 @pytest.fixture
 def repo(temp_db):
     """Instancia el repositorio usando el archivo temporal."""
-    return SQLiteKnowledgeRepository(db_path=temp_db)
+    return SQLiteAdapter(db_path=temp_db)
 
 
 @pytest.fixture
@@ -61,7 +61,7 @@ def sample_entry():
 # --- Tests ---
 
 
-class TestSQLiteKnowledgeRepository:
+class TestSQLiteAdapter:
     def test_save_and_retrieve(self, repo, sample_entry):
         # 1. Guardar
         repo.save(sample_entry)

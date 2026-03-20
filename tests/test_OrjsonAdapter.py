@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import List
 from datetime import timezone
 
-from CapsuleCore_book.capsule.OrjsonKnowledgeRepository import OrjsonKnowledgeRepository
+from CapsuleCore_book.capsule.OrjsonAdapter import OrjsonAdapter
 
 
 # --- Mocks de las clases core para que el test funcione ---
@@ -30,7 +30,7 @@ class Relation:
 @pytest.fixture
 def repo(tmp_path):
     """Crea una instancia del repositorio en un directorio temporal."""
-    return OrjsonKnowledgeRepository(storage_path=str(tmp_path))
+    return OrjsonAdapter(storage_path=str(tmp_path))
 
 
 @pytest.fixture

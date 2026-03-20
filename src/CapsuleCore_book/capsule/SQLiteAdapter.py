@@ -3,10 +3,10 @@ import json
 from datetime import datetime
 from typing import List, Optional
 from ..core import Entry, Relation
-from .KnowledgeRepository import KnowledgeRepository
+from .Lexicon import Lexicon
 
 
-class SQLiteKnowledgeRepository(KnowledgeRepository):
+class SQLiteAdapter(Lexicon):
     def __init__(self, db_path: str = "codex.db"):
         self.db_path = db_path
         self._create_tables()

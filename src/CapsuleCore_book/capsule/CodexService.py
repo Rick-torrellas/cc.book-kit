@@ -1,11 +1,11 @@
 from typing import List
 
 from ..core import Entry, Relation
-from .KnowledgeRepository import KnowledgeRepository
+from .Lexicon import Lexicon
 
 
 class CodexService:
-    def __init__(self, repository: KnowledgeRepository):
+    def __init__(self, repository: Lexicon):
         self.repository = repository
 
     def ingest(self, entry: Entry):

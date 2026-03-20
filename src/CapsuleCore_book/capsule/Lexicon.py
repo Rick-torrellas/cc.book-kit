@@ -4,7 +4,7 @@ from ..core import Entry, Relation
 from typing import List, Optional
 
 
-class KnowledgeRepository(ABC):
+class Lexicon(ABC):
     @abstractmethod
     def save(self, entry: Entry) -> None:
         pass

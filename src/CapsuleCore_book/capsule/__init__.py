@@ -1,12 +1,12 @@
 from .CodexService import CodexService
-from .KnowledgeRepository import KnowledgeRepository
-from .SQLiteKnowledgeRepository import SQLiteKnowledgeRepository
-from .OrjsonKnowledgeRepository import OrjsonKnowledgeRepository
+from .Lexicon import Lexicon
+from .SQLiteAdapter import SQLiteAdapter
+from .OrjsonAdapter import OrjsonAdapter
 
 
 __all__ = [
     "CodexService",
-    "KnowledgeRepository",
-    "SQLiteKnowledgeRepository",
-    "OrjsonKnowledgeRepository",
+    "Lexicon",
+    "SQLiteAdapter",
+    "OrjsonAdapter",
 ]

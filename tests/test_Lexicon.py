@@ -2,7 +2,7 @@ import pytest
 from typing import List
 from dataclasses import dataclass
 
-from CapsuleCore_book.capsule.KnowledgeRepository import KnowledgeRepository
+from CapsuleCore_book.capsule.Lexicon import Lexicon
 
 
 # --- Mocks de dependencias (ajusta según tus archivos reales) ---
@@ -20,7 +20,7 @@ class Relation:
 
 
 # --- La Suite de Tests Base ---
-class KnowledgeRepositoryTests:
+class LexiconTests:
     """
     Clase base de pruebas. No se ejecuta sola, se hereda en
     las implementaciones concretas.
@@ -63,7 +63,7 @@ class KnowledgeRepositoryTests:
 
 
 # Implementación concreta simple para el ejemplo
-class InMemoryRepository(KnowledgeRepository):
+class InMemoryRepository(Lexicon):
     def __init__(self):
         self.entries = {}
         self.relations = []
@@ -88,7 +88,7 @@ class InMemoryRepository(KnowledgeRepository):
 
 
 # --- El Test Final ---
-class TestInMemoryRepository(KnowledgeRepositoryTests):
+class TestInMemoryRepository(LexiconTests):
     @pytest.fixture
     def repo(self):
         return InMemoryRepository()

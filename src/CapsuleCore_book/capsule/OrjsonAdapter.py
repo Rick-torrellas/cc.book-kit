@@ -4,11 +4,11 @@ from typing import List, Optional
 from pathlib import Path
 from dataclasses import asdict
 
-from .KnowledgeRepository import KnowledgeRepository
+from .Lexicon import Lexicon
 from ..core import Entry, Relation
 
 
-class OrjsonKnowledgeRepository(KnowledgeRepository):
+class OrjsonAdapter(Lexicon):
     def __init__(self, storage_path: str = "./data/codex"):
         self.storage_path = Path(storage_path)
         self.relations_path = self.storage_path / "relations.json"
