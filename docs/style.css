@@ -141,3 +141,44 @@ code {
     .sidebar { display: none; }
     .main-content { margin-left: 0; padding: 2rem; }
 }
+/* Añade esto a tu style.css anterior */
+
+.method-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.method-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.method-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+}
+
+.method-card p {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* Estilo para indicar que es una Interfaz/Abstracta */
+#repository header h1::after {
+    content: "ABSTRACT";
+    font-size: 0.6rem;
+    background: #64748b;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-left: 10px;
+}

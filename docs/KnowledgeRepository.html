@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <article id="repository">
+    <header>
+        <h1>Interfaz <code>KnowledgeRepository</code></h1>
+        <p class="subtitle">Clase base abstracta (ABC) que define el contrato para la persistencia de conocimientos y sus relaciones.</p>
+    </header>
+
+    <section class="definition">
+        <h2>Definición del Contrato</h2>
+        <p>Esta interfaz asegura que cualquier adaptador de almacenamiento (SQL, NoSQL, In-Memory) proporcione los métodos necesarios para gestionar el ciclo de vida de las entidades <code>Entry</code> y <code>Relation</code>.</p>
+    </section>
+
+    <section class="methods">
+        <h2>Métodos Requeridos</h2>
+        
+        <div class="method-card">
+            <h3><code>save(entry: Entry) -> None</code></h3>
+            <p>Persiste una nueva entrada o actualiza una existente en el repositorio.</p>
+        </div>
+
+        <div class="method-card">
+            <h3><code>get_by_id(entry_id: str) -> Optional[Entry]</code></h3>
+            <p>Busca y retorna una entrada específica. Devuelve <code>None</code> si el ID no existe.</p>
+        </div>
+
+        <div class="method-card">
+            <h3><code>find_by_tag(tag: str) -> List[Entry]</code></h3>
+            <p>Recupera todas las entradas que contengan la etiqueta especificada.</p>
+        </div>
+
+        <div class="method-card">
+            <h3><code>delete(entry_id: str) -> bool</code></h3>
+            <p>Elimina una entrada por su ID. Retorna <code>True</code> si la operación fue exitosa.</p>
+        </div>
+
+        <div class="method-card">
+            <h3><code>add_relation(relation: Relation) -> None</code></h3>
+            <p>Crea un vínculo semántico entre dos entidades existentes.</p>
+        </div>
+
+        <div class="method-card">
+            <h3><code>remove_relation(relation: Relation) -> None</code></h3>
+            <p>Elimina el vínculo especificado entre dos entidades.</p>
+        </div>
+    </section>
+</article>
+</body>
+</html>
