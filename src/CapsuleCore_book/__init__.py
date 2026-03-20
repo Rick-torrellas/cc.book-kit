@@ -1,4 +1,17 @@
 from .core import Entry, Relation
-from .capsule import CodexService
+from .capsule import (
+    CodexService,
+    KnowledgeRepository,
+    SQLiteKnowledgeRepository,
+    OrjsonKnowledgeRepository,
+)
 
-__all__ = ["Entry", "Relation", "CodexService"]
+
+__all__ = [
+    "Entry",
+    "Relation",
+    "CodexService",
+    "KnowledgeRepository",
+    "SQLiteKnowledgeRepository",
+    "OrjsonKnowledgeRepository",
+]
