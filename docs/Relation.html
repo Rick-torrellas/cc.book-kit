@@ -1,57 +1,102 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación de Clase: Relation</title>
+    <title>Documentation | ShellBack Library</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
+<body id="repository">
+
+    <aside class="sidebar">
+        <h2>Architecture</h2>
+        <nav>
+            <a href="#" class="active">Repository Interface</a>
+            <a href="#">Adapters</a>
+            <a href="#">Entities</a>
+        </nav>
+
+        <h2 style="margin-top: 2rem;">Modules</h2>
+        <nav>
+            <a href="#">Core Log Engine</a>
+            <a href="#">ShellBack</a>
+            <a href="#">Web Components</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
         <header>
-            <h1>Clase <code>Relation</code></h1>
-            <p class="subtitle">Define vínculos direccionales y semánticos entre diferentes entidades del sistema.</p>
+            <h1>Repository</h1>
+            <p class="subtitle">Definición de la interfaz abstracta para la persistencia de datos.</p>
         </header>
 
-        <section class="definition">
-            <h2>Definición</h2>
-            <p>La clase <code>Relation</code> permite establecer un puente entre dos objetos identificables, especificando la naturaleza de su conexión mediante un tipo definido.</p>
+        <section>
+            <h2>Overview</h2>
+            <p>
+                Esta interfaz define el contrato que deben seguir todos los adaptadores de persistencia. 
+                Sigue el principio de inversión de dependencia para mantener el núcleo de la aplicación 
+                aislado de detalles de implementación como bases de datos o sistemas de archivos.
+            </p>
         </section>
 
-        <section class="attributes">
-            <h2>Atributos de Datos</h2>
+        <section>
+            <h2>Methods</h2>
+            
+            <div class="method-card">
+                <h3>save(entity: Entity): void</h3>
+                <p>Persiste una nueva entidad en el sistema de almacenamiento configurado.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_id(id: string): Entity</h3>
+                <p>Recupera una entidad específica utilizando su identificador único.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete(id: string): boolean</h3>
+                <p>Elimina una entrada del repositorio. Retorna <code>true</code> si la operación fue exitosa.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Data Structure</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Atributo</th>
-                        <th>Tipo</th>
-                        <th>Descripción</th>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><code>from_id</code></td>
-                        <td><code>str</code></td>
-                        <td>El identificador del objeto de origen (sujeto).</td>
+                        <td><code>id</code></td>
+                        <td>String</td>
+                        <td>Identificador único autogenerado (UUID).</td>
                     </tr>
                     <tr>
-                        <td><code>to_id</code></td>
-                        <td><code>str</code></td>
-                        <td>El identificador del objeto de destino (objeto).</td>
+                        <td><code>created_at</code></td>
+                        <td>DateTime</td>
+                        <td>Marca de tiempo de la creación del registro.</td>
                     </tr>
                     <tr>
-                        <td><code>connection_type</code></td>
-                        <td><code>str</code></td>
-                        <td>Cadena que describe la lógica de la unión (ej. <em>"referencia"</em>, <em>"depende de"</em>).</td>
+                        <td><code>payload</code></td>
+                        <td>Object</td>
+                        <td>Datos específicos de la entidad.</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <section class="usage-note">
-            <h2>Notas de Implementación</h2>
-            <p>A diferencia de <code>Entry</code>, esta clase es una representación pura de datos (Data Transfer Object) diseñada para grafos de conocimiento o trazabilidad de dependencias.</p>
+        <section>
+            <h2>Usage Example</h2>
+            <div class="method-box">
+                <p>Para implementar un nuevo adaptador, hereda de esta clase en tu capa de infraestructura:</p>
+                <code>class SQLRepository(Repository): ...</code>
+            </div>
         </section>
-    </div>
+    </main>
+
 </body>
 </html>

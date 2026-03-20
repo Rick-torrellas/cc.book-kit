@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentación de Clase: Entry</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Clase <code>Entry</code></h1>
-            <p class="subtitle">Entidad fundamental para la gestión de entradas de datos con soporte de metadatos.</p>
+
+    <aside class="sidebar">
+        <h2>Documentación</h2>
+        <nav>
+            <a href="#" class="active">Clase Entry</a>
+            <a href="#">Atributos</a>
+            <a href="#">Métodos</a>
+            <a href="#">Uso</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header id="repository">
+            <h1>Entry</h1>
+            <p class="subtitle">Representación base de una entrada de datos con soporte para metadatos dinámicos.</p>
         </header>
 
-        <section class="definition">
-            <h2>Definición</h2>
-            <p>La clase <code>Entry</code> utiliza <code>@dataclass</code> para representar una entrada de contenido enriquecida con identificadores únicos, marcas de tiempo y etiquetas.</p>
-        </section>
-
-        <section class="attributes">
-            <h2>Atributos</h2>
+        <section>
+            <h2>Definición de Atributos</h2>
+            <p>La clase utiliza <code>dataclasses</code> para gestionar el estado de la entrada.</p>
+            
             <table>
                 <thead>
                     <tr>
@@ -31,50 +40,67 @@
                 <tbody>
                     <tr>
                         <td><code>content</code></td>
-                        <td><code>str</code></td>
-                        <td>El cuerpo principal del contenido de la entrada.</td>
+                        <td>str</td>
+                        <td>El cuerpo de texto principal de la entrada.</td>
                     </tr>
                     <tr>
                         <td><code>title</code></td>
-                        <td><code>Optional[str]</code></td>
-                        <td>Título opcional para la entrada.</td>
+                        <td>Optional[str]</td>
+                        <td>Título opcional de la entrada (Default: None).</td>
                     </tr>
                     <tr>
                         <td><code>tags</code></td>
-                        <td><code>List[str]</code></td>
-                        <td>Lista de etiquetas (tags) asociadas.</td>
+                        <td>List[str]</td>
+                        <td>Lista de etiquetas para categorización.</td>
                     </tr>
                     <tr>
                         <td><code>id</code></td>
-                        <td><code>str</code></td>
-                        <td>Identificador único generado mediante UUID4.</td>
+                        <td>str</td>
+                        <td>Identificador único autogenerado (UUID4).</td>
                     </tr>
                     <tr>
                         <td><code>created_at</code></td>
-                        <td><code>datetime</code></td>
-                        <td>Fecha y hora de creación automática.</td>
-                    </tr>
-                    <tr>
-                        <td><code>updated_at</code></td>
-                        <td><code>Optional[datetime]</code></td>
-                        <td>Fecha y hora de la última modificación.</td>
+                        <td>datetime</td>
+                        <td>Marca de tiempo de creación automática.</td>
                     </tr>
                     <tr>
                         <td><code>metadata</code></td>
-                        <td><code>Dict[str, Any]</code></td>
-                        <td>Diccionario flexible para datos adicionales.</td>
+                        <td>Dict[str, Any]</td>
+                        <td>Diccionario flexible para campos adicionales.</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <section class="methods">
+        <section>
             <h2>Métodos</h2>
+            
             <div class="method-card">
-                <h3><code>update_content(new_content: str)</code></h3>
-                <p>Actualiza el contenido principal de la entrada y registra automáticamente la fecha actual en el atributo <code>updated_at</code>.</p>
+                <h3>update_content(new_content: str)</h3>
+                <p>Actualiza el contenido principal de la instancia y refresca automáticamente la fecha en el campo <code>updated_at</code>.</p>
+            </div>
+
+            <div class="method-box">
+                <strong>Nota de implementación:</strong> 
+                El uso de <code>field(default_factory=...)</code> asegura que cada instancia tenga su propia copia única de listas y diccionarios.
             </div>
         </section>
-    </div>
+
+        <section>
+            <h2>Ejemplo de Uso</h2>
+            <div style="background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: var(--radius); overflow-x: auto;">
+<pre style="margin: 0; font-family: 'Fira Code', monospace; font-size: 0.9rem;">
+new_entry = Entry(
+    content="Hola Mundo",
+    title="Mi primera nota",
+    metadata={"author": "Admin", "priority": "high"}
+)
+
+new_entry.update_content("Contenido actualizado")
+</pre>
+            </div>
+        </section>
+    </main>
+
 </body>
 </html>
