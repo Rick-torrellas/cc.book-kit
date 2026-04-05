@@ -1,0 +1,36 @@
+from dataclasses import dataclass, field
+from typing import Callable, List, Optional
+
+@dataclass(frozen=True)
+class CodexPolicy:
+    # Configuraciones de Título
+    title_required: bool = True
+    title_unique: bool = True
+    title_transform: Callable[[str], str] = lambda s: s.strip()
+    
+    # Configuraciones de Categoría
+    category_default: str = "General"
+    category_required: bool = True
+    category_transform: Callable[[str], str] = lambda s: s.strip().capitalize()
+    
+    # Configuraciones de Tags
+    tags_lowercase: bool = True
+    tags_unique: bool = True
+    tags_transform: Callable[[str], str] = lambda s: s.strip().lower()
+
+class Codex:
+    def __init__(self, repository: Lexicon, policy: CodexPolicy = CodexPolicy()):
+        self.repository = repository
+        self.policy = policy # Inyectamos la política
+
+    def _rules_title(self, title: str, current_entry_id: Optional[str] = None) -> str:
+        # Aplicamos la transformación definida en la política
+        clean_title = self.policy.title_transform(title)
+        
+        if self.policy.title_required and not clean_title:
+            raise ValueError("Title is required by policy.")
+            
+        if self.policy.title_unique:
+            self._validate_title_uniqueness(clean_title, current_entry_id)
+            
+        return clean_title

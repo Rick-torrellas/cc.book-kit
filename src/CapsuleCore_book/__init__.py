@@ -1,17 +1,13 @@
-from .core import Entry, Relation
+from .core import Entry, Relation, Codex, CodexPolicy
 from .capsule import (
-    CodexService,
-    Lexicon,
-    SQLiteAdapter,
-    OrjsonAdapter,
+    Lexicon
 )
 
 
 __all__ = [
     "Entry",
     "Relation",
-    "CodexService",
+    "Codex",
     "Lexicon",
-    "SQLiteAdapter",
-    "OrjsonAdapter",
+    "CodexPolicy"
 ]
