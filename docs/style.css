@@ -33,6 +33,25 @@ body {
     padding: 2rem 1.5rem;
     position: fixed;
     height: 100vh;
+    
+    /* Nuevas propiedades para scroll */
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido excede la altura */
+    scrollbar-width: thin; /* Para Firefox: hace la barra más discreta */
+    scrollbar-color: #475569 transparent; /* Para Firefox: color de la barra */
+}
+
+/* Opcional: Personalización de la barra de scroll para navegadores Webkit (Chrome, Safari, Edge) */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #475569; /* Color del "agarre" de la barra */
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent; /* Fondo de la barra */
 }
 
 .sidebar h2 {
