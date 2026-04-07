@@ -4,7 +4,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 
 
-@dataclass(kw_only=True,frozen=True)
+@dataclass(kw_only=True, frozen=True)
 class Entry:
     content: str
     title: Optional[str] = None

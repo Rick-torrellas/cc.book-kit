@@ -1,7 +1,5 @@
 from .core import Entry, Relation, Codex, CodexPolicy
-from .capsule import (
-    Lexicon
-)
+from .capsule import Lexicon, JSONLexicon, UJSONLexicon
 
 
 __all__ = [
@@ -9,5 +7,7 @@ __all__ = [
     "Relation",
     "Codex",
     "Lexicon",
-    "CodexPolicy"
+    "JSONLexicon",
+    "UJSONLexicon",
+    "CodexPolicy",
 ]

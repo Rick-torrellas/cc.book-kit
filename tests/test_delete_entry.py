@@ -1,54 +1,53 @@
 import pytest
-from CapsuleCore_book.core import Codex
 
-def test_delete_entry_success(codex: Codex, mock_repo):
-    # 1. Preparación: Crear una entrada
-    entry = codex.create_entry(title="Nota a eliminar", content="Contenido efímero")
+
+def test_delete_entry_success(codex, mock_repo):
+    """Debe eliminar una entrada existente y retornar True."""
+    # 1. Preparar: Crear una entrada
+    entry = codex.create_entry(title="Entrada a eliminar", content="Contenido efímero")
     entry_id = entry.id
-    
-    # Verificar que existe en el repositorio antes de borrar
-    assert mock_repo.get_by_id(entry_id) is not None
 
-    # 2. Ejecución: Llamar a delete_entry
+    # 2. Ejecutar: Eliminar
     result = codex.delete_entry(entry_id)
 
-    # 3. Aserciones
-    assert result is True, "Debería retornar True tras un borrado exitoso"
-    
-    # En un entorno real, el mock_repo debería haber eliminado el objeto.
-    # Nota: Tu InMemoryLexicon actual en conftest.py retorna True pero no borra 
-    # físicamente del dict self.entries. Para un test riguroso, podrías 
-    # actualizar el mock o verificar la llamada.
-    
-def test_delete_entry_non_existent(codex: Codex):
-    # Intentar borrar algo que no existe
-    result = codex.delete_entry("id_imaginario")
-    
-    assert result is False, "Debería retornar False si la entrada no existe"
+    # 3. Verificar
+    assert result is True
+    assert mock_repo.get_by_id(entry_id) is None
 
-def test_delete_entry_invalid_id(codex: Codex):
-    # Validar que lanza error con entradas inválidas (según la lógica de tu Codex.py)
+
+def test_delete_entry_non_existent(codex):
+    """Debe retornar False si se intenta eliminar un ID que no existe."""
+    result = codex.delete_entry("id_inexistente")
+    assert result is False
+
+
+def test_delete_entry_invalid_id_type(codex):
+    """Debe lanzar ValueError si el ID no es un string o es nulo."""
     with pytest.raises(ValueError, match="Se requiere un ID de entrada válido"):
         codex.delete_entry(None)
-    
-    with pytest.raises(ValueError, match="Se requiere un ID de entrada válido"):
-        codex.delete_entry(123) # No es string
 
-def test_delete_entry_atomic_logic(codex: Codex, mock_repo):
+    with pytest.raises(ValueError, match="Se requiere un ID de entrada válido"):
+        codex.delete_entry(123)  # Tipo incorrecto
+
+
+def test_delete_entry_removes_relations(codex, mock_repo):
     """
-    Verifica que se llame al método delete del repositorio, 
-    el cual según el contrato de Lexicon.py, debe ser atómico.
+    Debe asegurar que al eliminar una entrada, el Lexicon también
+    limpie las relaciones asociadas (evitar huérfanos).
     """
-    entry = codex.create_entry(title="Nota con Relaciones", content="...")
-    
-    # Simulamos que el repositorio borra de verdad para esta prueba
-    def mock_delete(eid):
-        if eid in mock_repo.entries:
-            del mock_repo.entries[eid]
-            return True
-        return False
-    
-    mock_repo.delete = mock_delete
-    
-    codex.delete_entry(entry.id)
-    assert mock_repo.get_by_id(entry.id) is None
+    # 1. Preparar: Crear dos entradas y relacionarlas
+    e1 = codex.create_entry(title="Origen", content="...")
+    e2 = codex.create_entry(title="Destino", content="...")
+    codex.create_relation(from_id=e1.id, to_id=e2.id)
+
+    # Verificar que la relación existe en el mock_repo
+    assert len(mock_repo.relations) == 1
+
+    # 2. Ejecutar: Eliminar una de las entradas
+    codex.delete_entry(e1.id)
+
+    # 3. Verificar: La relación donde participaba e1 debe haber desaparecido
+    # (Siguiendo el contrato definido en Lexicon.delete)
+    assert len(mock_repo.relations) == 0
+    assert mock_repo.get_by_id(e1.id) is None
+    assert mock_repo.get_by_id(e2.id) is not None  # La otra entrada sigue viva

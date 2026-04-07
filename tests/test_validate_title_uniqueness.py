@@ -1,31 +1,51 @@
 import pytest
-from CapsuleCore_book.core import Entry, Codex
-from CapsuleCore_book.capsule import Lexicon
 
 
-def test_validate_title_uniqueness_new_duplicate(codex: Codex, mock_repo: Lexicon):
-    # 1. Preparamos el terreno: guardamos una entrada existente
-    existing_entry = Entry(title="Receta de Pan", content="...")
-    mock_repo.save(existing_entry)
-    
-    # 2. Intentamos validar el mismo título para una entrada NUEVA (current_entry_id = None)
-    with pytest.raises(ValueError, match="Ya existe una entrada con el título: 'Receta de Pan'"):
-        codex._validate_title_uniqueness("Receta de Pan")
+def test_validate_title_uniqueness_success(codex):
+    """Debe permitir un título que no existe en el repositorio."""
+    # No debe lanzar ninguna excepción
+    codex._validate_title_uniqueness("Título Único")
 
-def test_validate_title_uniqueness_same_id_success(codex: Codex, mock_repo: Lexicon):
-    # 1. Guardamos una entrada
-    existing_entry = Entry(title="Diario", content="...")
-    mock_repo.save(existing_entry)
-    
-    # 2. Validamos el mismo título pero pasando su ID (simulando una edición)
-    # NO debe lanzar excepción
-    codex._validate_title_uniqueness("Diario", current_entry_id=existing_entry.id)
 
-def test_validate_title_uniqueness_different_id_fails(codex: Codex, mock_repo: Lexicon):
-    # 1. Tenemos la entrada A
-    entry_a = Entry(title="Secreto", content="...", id="id-123")
-    mock_repo.save(entry_a)
-    
-    # 2. Intentamos ponerle el título "Secreto" a la entrada B (id-999)
-    with pytest.raises(ValueError, match="Ya existe"):
-        codex._validate_title_uniqueness("Secreto", current_entry_id="id-999")
+def test_validate_title_uniqueness_duplicate_raises_error(codex):
+    """Debe lanzar ValueError si el título ya está ocupado por otra entrada."""
+    codex.create_entry(title="Existente", content="Contenido original")
+
+    with pytest.raises(
+        ValueError, match="Ya existe una entrada con el título: 'Existente'"
+    ):
+        codex._validate_title_uniqueness("Existente")
+
+
+def test_validate_title_uniqueness_same_entry_id(codex):
+    """
+    Debe permitir el mismo título si el ID proporcionado coincide con el de la
+    entrada existente (caso típico de edición sin cambiar el título).
+    """
+    entry = codex.create_entry(title="Mi Titulo", content="...")
+
+    # Si pasamos el ID de la entrada actual, no debería dar error aunque el título coincida
+    codex._validate_title_uniqueness("Mi Titulo", current_entry_id=entry.id)
+
+
+def test_validate_title_uniqueness_different_id_conflict(codex):
+    """Debe lanzar error si el título coincide con OTRA entrada (ID diferente)."""
+    codex.create_entry(title="Ocupado", content="...")
+    otra_entry = codex.create_entry(title="Libre", content="...")
+
+    # Intentamos validar el título 'Ocupado' para la entrada que se llama 'Libre'
+    with pytest.raises(ValueError, match="Ya existe una entrada con el título"):
+        codex._validate_title_uniqueness("Ocupado", current_entry_id=otra_entry.id)
+
+
+def test_validate_title_uniqueness_case_sensitive(codex, mock_repo):
+    """
+    Verifica si la unicidad es sensible a mayúsculas/minúsculas
+    (depende de la implementación del Lexicon).
+    """
+    codex.create_entry(title="PROYECTO", content="...")
+
+    # Si el repo/policy no normaliza, esto debería pasar.
+    # Si el repo es case-insensitive, esto debería fallar.
+    # Basado en tu InMemoryLexicon, es case-sensitive:
+    codex._validate_title_uniqueness("proyecto")

@@ -1,68 +1,89 @@
 import pytest
-from CapsuleCore_book.core import Entry, Codex
-from CapsuleCore_book.capsule import Lexicon
+from CapsuleCore_book.core import Entry
 
-def test_create_entry_success(codex: Codex, mock_repo: Lexicon):
-    """
-    Verifica que una entrada se cree correctamente con datos válidos
-    y se guarde en el repositorio.
-    """
-    # 1. Datos de prueba
-    title = "  Mi Primera Nota  "
+
+def test_create_entry_success(codex):
+    """Verifica que una entrada se cree correctamente con datos válidos."""
+    title = "Mi Primera Entrada"
     content = "Contenido de prueba"
-    tags = ["Python", "  TEST  "]
+    tags = ["python", "tests"]
     category = "Desarrollo"
 
-    # 2. Ejecutar acción
     entry = codex.create_entry(
-        title=title, 
-        content=content, 
-        tags=tags, 
+        title=title,
+        content=content,
+        tags=tags,
         category=category,
-        metadata={"priority": "high"}
+        metadata={"prioridad": "alta"},
     )
 
-    # 3. Verificaciones de la instancia retornada
+    # Verificaciones básicas
     assert isinstance(entry, Entry)
-    assert entry.id is not None
-    # Verifica que se aplicó el strip del título (según CodexPolicy)
-    assert entry.title == "Mi Primera Nota"
+    assert entry.title == title
     assert entry.content == content
-    # Verifica que los tags se normalizaron (lowercase y strip según política)
     assert "python" in entry.tags
-    assert "test" in entry.tags
-    assert entry.category == "Desarrollo"
-    assert entry.metadata["priority"] == "high"
+    assert entry.category == category
+    assert entry.metadata["prioridad"] == "alta"
+    assert entry.id is not None
 
-    # 4. Verificar persistencia en el repositorio (mock_repo)
-    saved_entry = mock_repo.get_by_id(entry.id)
-    assert saved_entry is not None
-    assert saved_entry.title == entry.title
 
-def test_create_entry_duplicate_title_error(codex: Codex):
-    """
-    Verifica que la política de títulos únicos lance una excepción
-    si intentamos crear una entrada con un título ya existente.
-    """
+def test_create_entry_policy_cleaning(codex):
+    """Verifica que se apliquen las reglas de limpieza (strip, lowercase, capitalize)."""
+    # El título tiene espacios, los tags están en mayúsculas y la categoría en minúsculas
+    entry = codex.create_entry(
+        title="  Título con Espacios  ",
+        content="...",
+        tags=["PYTHON ", " ARCH "],
+        category="proyectos",
+    )
+
+    # Según CodexPolicy: title_strip=True, tags_lowercase=True, category_capitalize=True
+    assert entry.title == "Título con Espacios"
+    assert "python" in entry.tags
+    assert "arch" in entry.tags
+    assert entry.category == "Proyectos"
+
+
+def test_create_entry_duplicate_title_error(codex):
+    """Verifica que la política de títulos únicos lance una excepción."""
     title = "Título Único"
-    codex.create_entry(title=title, content="Primer contenido")
+    codex.create_entry(title=title, content="Contenido 1")
 
-    # Intentar crear otra con el mismo título debería fallar
-    with pytest.raises(ValueError, match=f"Ya existe una entrada con el título: '{title}'"):
-        codex.create_entry(title=title, content="Segundo contenido")
+    # Intentar crear otra entrada con el mismo título debería fallar
+    with pytest.raises(
+        ValueError, match=f"Ya existe una entrada con el título: '{title}'"
+    ):
+        codex.create_entry(title=title, content="Contenido 2")
 
-def test_create_entry_default_category(codex: Codex):
-    """
-    Verifica que si no se proporciona categoría, se asigne la 
-    categoría por defecto definida en CodexPolicy ("General").
-    """
-    entry = codex.create_entry(title="Nota sin categoría", content="...")
-    
+
+def test_create_entry_default_category(codex):
+    """Verifica que se asigne la categoría por defecto si no se provee una."""
+    entry = codex.create_entry(title="Sin Categoría", content="...")
+
+    # Según CodexPolicy: category_default = "General"
     assert entry.category == "General"
 
-def test_create_entry_policy_validation_error(codex: Codex):
-    """
-    Verifica que si el título es requerido y se envía vacío, lance un error.
-    """
+
+def test_create_entry_empty_title_error(codex):
+    """Verifica que falle si el título es requerido y se envía vacío."""
     with pytest.raises(ValueError, match="El título es requerido"):
         codex.create_entry(title="", content="Contenido sin título")
+
+
+def test_create_entry_tags_uniqueness_and_sort(codex):
+    """Verifica que los tags sean únicos y se ordenen alfabéticamente."""
+    entry = codex.create_entry(
+        title="Tags Test", content="...", tags=["b", "a", "b", "c"]
+    )
+
+    # Debería resultar en ['a', 'b', 'c']
+    assert entry.tags == ["a", "b", "c"]
+
+
+def test_create_entry_persistence(codex, mock_repo):
+    """Verifica que la entrada realmente se guarde en el repositorio (Lexicon)."""
+    entry = codex.create_entry(title="Persistencia", content="Guardado")
+
+    saved_entry = mock_repo.get_by_id(entry.id)
+    assert saved_entry is not None
+    assert saved_entry.title == "Persistencia"

@@ -1,6 +1,6 @@
 [project]
 name = "CapsuleCore_book"
-version = "0.5.0"
+version = "0.6.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -9,6 +9,7 @@ dependencies = [
     "peewee>=4.0.2",
     "pytest>=9.0.2",
     "ruff>=0.15.7",
+    "ujson>=5.12.0",
 ]
 
 [[tool.uv.index]]
