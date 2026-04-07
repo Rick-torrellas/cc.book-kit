@@ -1,101 +1,125 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación de Clase: Entry</title>
+    <title>Entry Model Documentation</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <aside class="sidebar">
-        <h2>Navegación</h2>
+        <h2>Models</h2>
         <nav>
-            <a href="#overview" class="active">Vista General</a>
-            <a href="#attributes">Atributos</a>
-            <a href="#methods">Métodos</a>
-            <a href="#example">Ejemplo de Uso</a>
+            <a href="#entry-class" class="active">Entry Class</a>
+        </nav>
+        
+        <h2 style="margin-top: 2rem;">Attributes</h2>
+        <nav>
+            <a href="#attr-content">content</a>
+            <a href="#attr-identity">id & Timestamps</a>
+            <a href="#attr-meta">Metadata & Tags</a>
         </nav>
     </aside>
 
     <main class="main-content">
-        <header id="overview">
-            <h1>Class Entry</h1>
-            <p class="subtitle">Entidad base para la gestión de contenidos y metadatos dinámicos.</p>
+        <header id="repository">
+            <h1>Entry</h1>
+            <p class="subtitle">Core data structure for content management and metadata tracking.</p>
         </header>
 
-        <section id="attributes">
-            <h2>Atributos</h2>
+        <section id="entry-class">
+            <h2>Overview</h2>
+            <p>The <code>Entry</code> class is a frozen dataclass designed to represent a single unit of information. It uses <code>kw_only=True</code> to enforce explicit naming of arguments during instantiation, ensuring code clarity and preventing positional argument errors.</p>
+            
+            <div class="method-box">
+                <code>@dataclass(kw_only=True, frozen=True)</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>Attributes</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Campo</th>
-                        <th>Tipo</th>
-                        <th>Descripción</th>
+                        <th>Attribute</th>
+                        <th>Type</th>
+                        <th>Default</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr id="attr-content">
                         <td><code>content</code></td>
                         <td><code>str</code></td>
-                        <td>El cuerpo de texto principal de la entrada.</td>
+                        <td><em>Required</em></td>
                     </tr>
                     <tr>
                         <td><code>title</code></td>
                         <td><code>Optional[str]</code></td>
-                        <td>Título opcional para identificar la entrada.</td>
+                        <td><code>None</code></td>
                     </tr>
                     <tr>
                         <td><code>tags</code></td>
                         <td><code>List[str]</code></td>
-                        <td>Lista de etiquetas para categorización (Default: empty list).</td>
+                        <td><code>[]</code></td>
                     </tr>
                     <tr>
+                        <td><code>category</code></td>
+                        <td><code>Optional[str]</code></td>
+                        <td><code>None</code></td>
+                    </tr>
+                    <tr id="attr-identity">
                         <td><code>id</code></td>
                         <td><code>str</code></td>
-                        <td>Identificador único universal (UUID v4).</td>
+                        <td><code>UUID4 String</code></td>
                     </tr>
                     <tr>
                         <td><code>created_at</code></td>
                         <td><code>datetime</code></td>
-                        <td>Marca de tiempo de creación automática.</td>
+                        <td><code>now()</code></td>
                     </tr>
-                    <tr>
-                        <td><code>updated_at</code></td>
-                        <td><code>Optional[datetime]</code></td>
-                        <td>Fecha de la última modificación (Nulo si no se ha editado).</td>
-                    </tr>
-                    <tr>
+                    <tr id="attr-meta">
                         <td><code>metadata</code></td>
                         <td><code>Dict[str, Any]</code></td>
-                        <td>Diccionario flexible para datos adicionales.</td>
+                        <td><code>{}</code></td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <section id="methods">
-            <h2>Métodos</h2>
+        <section>
+            <h2>Implementation Details</h2>
             
             <div class="method-card">
-                <h3>update_content(new_content: str)</h3>
-                <p>Actualiza el contenido de la entrada y registra automáticamente la fecha de modificación en <code>updated_at</code>.</p>
+                <h3>Immutability</h3>
+                <p>The class is <strong>frozen</strong>. Once an instance is created, its fields cannot be modified. This makes the objects hashable and safe for use in multi-threaded environments or as dictionary keys.</p>
             </div>
-            
-            <div class="method-box" style="margin-top: 1rem;">
-                <strong>Nota:</strong> Los campos <code>id</code> y <code>created_at</code> se gestionan automáticamente mediante <code>field(default_factory=...)</code>.
+
+            <div class="method-card">
+                <h3>Unique Identification</h3>
+                <p>Each entry is automatically assigned a unique <code>uuid4</code> identifier upon creation, ensuring no collisions when syncing across different databases or systems.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>Flexible Metadata</h3>
+                <p>The <code>metadata</code> field allows for total flexibility, enabling the storage of domain-specific information without modifying the core schema.</p>
             </div>
         </section>
 
-        <section id="example">
-            <h2>Implementación</h2>
-            <pre style="background: var(--code-bg); padding: 1rem; border-radius: var(--radius); overflow-x: auto;">
-<code>@dataclass
-class Entry:
-    content: str
-    title: Optional[str] = None
-    # ... (resto del código)</code></pre>
+        <section>
+            <h2>Usage Example</h2>
+            <div class="method-box">
+                <pre style="margin: 0; color: var(--text-main); font-family: 'Fira Code', monospace; font-size: 0.85rem;">
+new_entry = Entry(
+    content="Hello World",
+    title="Greeting",
+    tags=["intro", "test"],
+    metadata={"author_id": 42}
+)</pre>
+            </div>
         </section>
     </main>
 
