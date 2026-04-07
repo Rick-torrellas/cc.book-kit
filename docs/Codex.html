@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codex API Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Internal override for specific documentation needs */
+        .params-table { margin-top: 1rem; margin-bottom: 1rem; }
+        .tag-badge { 
+            font-size: 0.7rem; 
+            background: var(--code-bg); 
+            color: var(--text-main); 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Capsule Core book</h2>
+        <nav>
+            <a href="Entry.html" class="active">Entry</a>
+            <a href="Relation.html">Relation</a>
+            <a href="CodexPolicy.html">CodexPolicy</a>
+            <a href="Codex.html">Codex</a>
+            <a href="Lexicon.html">Lexicon</a>
+            <a href="JSONLexicon.html">JSONLexicon</a>
+            <a href="PydanticLexicon.html">PydanticLexicon</a>
+            <a href="UJSONLexicon.html">UJSONLexicon</a>
+            <a href="ORJSONLexicon.html">ORJSONLexicon</a>
+        </nav>
+        <h2>
+            Codex
+        </h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#constructor">Constructor</a>
+            <a href="#core-methods">Core Methods</a>
+            <a href="#relationships">Relationship Management</a>
+            <a href="#grouping">Grouping & Retrieval</a>
+            <a href="#internal-rules">Validation Rules</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header id="overview">
+            <h1>Codex</h1>
+            <p class="subtitle">The central orchestrator for managing entries, relationships, and metadata policies within the Lexicon ecosystem.</p>
+        </header>
+
+        <section id="constructor">
+            <h2>Constructor</h2>
+            <div class="method-box">
+                <code>Codex(repository: Lexicon, policy: CodexPolicy = CodexPolicy())</code>
+                <p style="margin-top: 1rem;">Initializes the Codex engine with a specific persistence repository and a set of validation policies.</p>
+            </div>
+        </section>
+
+        <section id="core-methods">
+            <h2>Core Methods</h2>
+
+            <div class="method-card">
+                <h3>create_entry(...)</h3>
+                <p>Creates, validates, and persists a new <code>Entry</code>. Titles, tags, and categories are automatically sanitized according to the active <code>CodexPolicy</code>.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>title</td><td><code>str</code></td><td>The unique title of the entry.</td></tr>
+                        <tr><td>content</td><td><code>str</code></td><td>Main body text.</td></tr>
+                        <tr><td>tags</td><td><code>List[str]</code></td><td>Optional list of identifiers.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="method-card">
+                <h3>edit_entry(entry_id, **changes)</h3>
+                <p>Updates an existing entry. Protects immutable fields (<code>id</code>, <code>created_at</code>) and only triggers an update if data actually changes.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete_entry(entry_id)</h3>
+                <p>Safely removes an entry from the repository. Returns <code>True</code> if the operation was successful.</p>
+            </div>
+        </section>
+
+        <section id="relationships">
+            <h2>Relationship Management</h2>
+            <p>Handles the connections between different entries in the graph.</p>
+
+            <div class="method-card">
+                <h3>create_relation(from_id, to_id, connection_type, **kwargs)</h3>
+                <p>Establishes a link between two entries. Validates existence of both points and prevents duplicate relations.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>disconnect_entries(from_id, to_id, connection_type)</h3>
+                <p>Breaks the link between two entries. Returns a boolean indicating success.</p>
+            </div>
+        </section>
+
+        <section id="grouping">
+            <h2>Grouping & Retrieval</h2>
+
+            <div class="method-card">
+                <h3>groupBy_relations(entry_id)</h3>
+                <p>Retrieves all connected entries (both incoming and outgoing) as a flat list, treating the relationship as bidirectional and removing duplicates.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>groupBy_tags(tag)</h3>
+                <p>Filters the repository for all entries containing the specified tag. The tag is normalized before searching.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>groupBy_categories(category)</h3>
+                <p>Filters entries by category name, applying capitalization and whitespace rules before the query.</p>
+            </div>
+        </section>
+
+        <section id="internal-rules">
+            <h2>Internal Validation Rules</h2>
+            <p>Codex enforces several data integrity rules based on the <code>CodexPolicy</code>:</p>
+            <ul>
+                <li><strong>Title Uniqueness:</strong> Controlled via <code>_rules_title</code>, ensures no two entries share the same name.</li>
+                <li><strong>Immutability:</strong> Fields like <code>id</code> and <code>created_at</code> are blocked during edits.</li>
+                <li><strong>Normalization:</strong> Tags can be forced to lowercase, and categories can be auto-capitalized.</li>
+                <li><strong>Reference Breaking:</strong> When editing mutable types (lists/dicts), Codex creates copies to ensure no side effects.</li>
+            </ul>
+        </section>
+
+        <footer style="margin-top: 4rem; color: #94a3b8; font-size: 0.8rem; text-align: center; border-top: 1px solid var(--border); padding-top: 2rem;">
+            Generated for Codex Engine Documentation &copy; 2026
+        </footer>
+    </main>
+
+</body>
+</html>

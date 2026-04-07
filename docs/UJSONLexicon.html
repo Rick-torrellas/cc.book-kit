@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UJSONLexicon Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Documentation</h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#initialization">Initialization</a>
+            <a href="#persistence">Core Persistence</a>
+            <a href="#retrieval">Entry Retrieval</a>
+            <a href="#relations">Relation Management</a>
+            <a href="#helpers">Private Helpers</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>UJSONLexicon</h1>
+            <p class="subtitle">High-speed persistence adapter using <code>ujson</code> for flat-file serialization.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Class Overview</h2>
+            <p>
+                The <code>UJSONLexicon</code> class is an implementation of the <code>Lexicon</code> port. 
+                It leverages the <code>ujson</code> library to handle large-scale JSON operations with significantly 
+                lower latency than the standard library, making it ideal for graph-based flat-file storage.
+            </p>
+            <div class="method-box">
+                <strong>Inheritance:</strong> <code>UJSONLexicon</code> &rarr; <code>Lexicon</code>
+            </div>
+        </section>
+
+        <section id="initialization">
+            <h2>Initialization</h2>
+            <div class="method-card">
+                <h3>__init__(storage_path: str = "codex_data.json")</h3>
+                <p>Sets the path for the JSON database and ensures the file exists with a valid structure.</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>storage_path</code></td>
+                        <td>string</td>
+                        <td>The file path where data is persisted. Defaults to <code>codex_data.json</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="persistence">
+            <h2>Core Persistence</h2>
+            
+            <div class="method-card">
+                <h3>save(entry: Entry) -> None</h3>
+                <p>Serializes an <code>Entry</code> object into the JSON store. Updates <code>updated_at</code> automatically.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete(entry_id: str) -> bool</h3>
+                <p>Removes an entry and performs manual referential integrity by cleaning up all associated relations.</p>
+            </div>
+        </section>
+
+        <section id="retrieval">
+            <h2>Entry Retrieval</h2>
+            <p>Methods designed to query the entry registry efficiently.</p>
+
+            <div class="method-card">
+                <h3>get_by_id(entry_id: str) -> Optional[Entry]</h3>
+                <p>Retrieves a single entry by its unique identifier.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_tag(tag: str) -> List[Entry]</h3>
+                <p>Filters and returns all entries containing the specified tag.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_date_range(start: datetime, end: datetime) -> List[Entry]</h3>
+                <p>Returns entries created within the specified <code>datetime</code> window.</p>
+            </div>
+        </section>
+
+        <section id="relations">
+            <h2>Relation Management</h2>
+            <p>Handles the graph edges between different entries.</p>
+
+            <div class="method-card">
+                <h3>save_relation(relation: Relation)</h3>
+                <p>Persists a link between two entries if it doesn't already exist.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_out_relations(entry_id: str) -> List[Relation]</h3>
+                <p>Retrieves all relations where the given ID is the <code>from_id</code> (source).</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete_relation(from_id, to_id, connection_type) -> bool</h3>
+                <p>Removes a specific edge from the graph. Returns <code>True</code> if a deletion occurred.</p>
+            </div>
+        </section>
+
+        <section id="helpers">
+            <h2>Private Utilities</h2>
+            <p>Internal methods for data mapping and file I/O.</p>
+            <ul>
+                <li><code>_read_data()</code>: Handles file opening and <code>ujson.load()</code> with error recovery.</li>
+                <li><code>_write_data(data)</code>: Executes <code>ujson.dump()</code> with optimized indentation.</li>
+                <li><code>_map_to_entry(dict)</code>: Converts raw JSON dictionaries back into <code>Entry</code> dataclasses.</li>
+            </ul>
+        </section>
+    </main>
+
+</body>
+</html>

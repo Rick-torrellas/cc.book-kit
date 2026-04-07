@@ -3,84 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relation Dataclass Documentation</title>
+    <title>Relation Class Documentation</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body id="repository">
+<body>
 
     <aside class="sidebar">
-        <h2>Models</h2>
+        <h2>Core API</h2>
         <nav>
-            <a href="#" class="active">Relation</a>
-            <a href="#">Node</a>
-            <a href="#">Graph</a>
-        </nav>
-        <h2 style="margin-top: 2rem;">API Reference</h2>
-        <nav>
-            <a href="#">Authentication</a>
-            <a href="#">Endpoints</a>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#attributes">Attributes</a>
+            <a href="#initialization">Initialization</a>
+            <a href="#validation">Validation</a>
         </nav>
     </aside>
 
     <main class="main-content">
-        <header>
+        <header id="repository">
             <h1>Relation</h1>
-            <p class="subtitle">An immutable data structure representing a directional link between two entities.</p>
+            <p class="subtitle">An immutable data structure representing a link between two entities.</p>
         </header>
 
-        <section>
+        <section id="overview">
             <h2>Overview</h2>
-            <p>The <code>Relation</code> class is a frozen dataclass used to define how different IDs within the system interact with one another. Since it is marked as <code>frozen=True</code>, instances are hashable and their attributes cannot be modified after creation.</p>
-            
-            <div class="method-box" style="margin-top: 1.5rem;">
-                <strong>Python Definition:</strong><br>
-                <code>@dataclass(frozen=True) class Relation:</code>
+            <p>
+                The <code>Relation</code> class is a <strong>frozen dataclass</strong> designed to model directed connections 
+                within a graph or relational system. Since it is frozen, instances are hashable and their state cannot 
+                be modified after creation, ensuring data integrity.
+            </p>
+            <div class="method-box">
+                <code>from dataclasses import dataclass</code><br>
+                <code>@dataclass(frozen=True)</code>
             </div>
         </section>
 
-        <section>
+        <section id="attributes">
             <h2>Attributes</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Property</th>
+                        <th>Attribute</th>
                         <th>Type</th>
+                        <th>Default</th>
                         <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><code>from_id</code></td>
-                        <td>string</td>
+                        <td><code>str</code></td>
+                        <td><em>Required</em></td>
                         <td>The unique identifier of the source entity.</td>
                     </tr>
                     <tr>
                         <td><code>to_id</code></td>
-                        <td>string</td>
+                        <td><code>str</code></td>
+                        <td><em>Required</em></td>
                         <td>The unique identifier of the target entity.</td>
                     </tr>
                     <tr>
                         <td><code>connection_type</code></td>
-                        <td>string</td>
-                        <td>The nature of the link (e.g., "reference", "depends_on", "contradicts").</td>
+                        <td><code>str</code></td>
+                        <td><code>"relation"</code></td>
+                        <td>Category or label describing the nature of the link.</td>
+                    </tr>
+                    <tr>
+                        <td><code>metadata</code></td>
+                        <td><code>Dict[str, Any]</code></td>
+                        <td><code>{}</code></td>
+                        <td>Additional key-value pairs for custom properties.</td>
                     </tr>
                 </tbody>
             </table>
         </section>
 
-        <section>
-            <h2>Implementation Examples</h2>
+        <section id="validation">
+            <h2>Internal Logic</h2>
             
             <div class="method-card">
-                <h3>Instantiating a Dependency</h3>
-                <p><code>rel = Relation(from_id="A", to_id="B", connection_type="depends_on")</code></p>
-                <p style="margin-top: 0.5rem; color: #64748b;">Creates a one-way dependency where A relies on B.</p>
+                <h3>__post_init__(self)</h3>
+                <p>
+                    Performs post-instantiation validation. If either <code>from_id</code> or <code>to_id</code> 
+                    are empty or null, it raises a <code>ValueError</code>.
+                </p>
             </div>
 
+            <div class="method-box" style="margin-top: 1rem;">
+                <strong>Exception Raised:</strong> <code>ValueError</code><br>
+                <em>"Una relación requiere un ID de origen y un ID de destino."</em>
+            </div>
+        </section>
+
+        <section id="initialization">
+            <h2>Example Usage</h2>
             <div class="method-card">
-                <h3>Logical Contradiction</h3>
-                <p><code>rel = Relation(from_id="arg_1", to_id="arg_2", connection_type="contradicts")</code></p>
-                <p style="margin-top: 0.5rem; color: #64748b;">Used to map conflicting data points in a knowledge graph.</p>
+                <h3>Basic Instance</h3>
+                <p><code>rel = Relation(from_id="user_1", to_id="order_50")</code></p>
+            </div>
+            <div class="method-card">
+                <h3>Custom Metadata</h3>
+                <p><code>rel = Relation("A", "B", "friendship", {"since": 2024})</code></p>
             </div>
         </section>
     </main>

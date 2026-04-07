@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodexPolicy Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Documentation</h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#title-config">Title Config</a>
+            <a href="#tags-config">Tags Config</a>
+            <a href="#category-config">Category Config</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>CodexPolicy</h1>
+            <p class="subtitle">Immutable configuration for content validation and normalization.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <code>CodexPolicy</code> dataclass defines the rules for how content titles, tags, and categories should be handled within the system. It ensures data consistency through strict validation rules and normalization flags.</p>
+            <div class="method-box">
+                <code>@dataclass(frozen=True)</code>
+                <p>This class is <strong>immutable</strong>. Once an instance is created, its attributes cannot be modified, making it thread-safe and reliable for policy injection.</p>
+            </div>
+        </section>
+
+        <section id="title-config">
+            <h2>Title Configuration</h2>
+            <p>Settings related to title validation and formatting.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>title_required</code></td>
+                        <td>boolean</td>
+                        <td><code>True</code></td>
+                        <td>Specifies if a title must be provided.</td>
+                    </tr>
+                    <tr>
+                        <td><code>title_unique</code></td>
+                        <td>boolean</td>
+                        <td><code>True</code></td>
+                        <td>Ensures no two items share the same title.</td>
+                    </tr>
+                    <tr>
+                        <td><code>title_max_length</code></td>
+                        <td>int</td>
+                        <td><code>150</code></td>
+                        <td>Maximum allowed characters for the title.</td>
+                    </tr>
+                    <tr>
+                        <td><code>title_strip</code></td>
+                        <td>boolean</td>
+                        <td><code>True</code></td>
+                        <td>Removes leading/trailing whitespace automatically.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="tags-config">
+            <h2>Tags Configuration</h2>
+            <p>Handles the "Folksonomy"—the flexible and connective tagging system.</p>
+
+            <div class="method-card">
+                <h3>tags_lowercase</h3>
+                <p>When enabled, all tags are converted to lowercase to prevent duplicates like "Python" and "python".</p>
+            </div>
+
+            <div class="method-card">
+                <h3>tags_sort</h3>
+                <p>Automatically sorts tags alphabetically for consistent metadata storage.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>tags_unique</h3>
+                <p>Filters out duplicate tags within a single content entry.</p>
+            </div>
+        </section>
+
+        <section id="category-config">
+            <h2>Category Configuration</h2>
+            <p>Handles the "Taxonomy"—the structural and organizational hierarchy.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>category_required</code></td>
+                        <td>boolean</td>
+                        <td><code>True</code></td>
+                        <td>Mandates that every item must belong to a category.</td>
+                    </tr>
+                    <tr>
+                        <td><code>category_default</code></td>
+                        <td>string</td>
+                        <td><code>"General"</code></td>
+                        <td>The fallback category name if none is provided.</td>
+                    </tr>
+                    <tr>
+                        <td><code>category_capitalize</code></td>
+                        <td>boolean</td>
+                        <td><code>True</code></td>
+                        <td>Ensures the first letter of the category is uppercase.</td>
+                    </tr>
+                    <tr>
+                        <td><code>category_max_length</code></td>
+                        <td>int</td>
+                        <td><code>50</code></td>
+                        <td>Restricts category names to a specific length.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+</body>
+</html>

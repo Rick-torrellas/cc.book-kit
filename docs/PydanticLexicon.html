@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PydanticLexicon Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="repository">
+    <aside class="sidebar">
+        <h2>Documentation</h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#schemas">Data Schemas</a>
+            <a href="#methods">Lexicon Methods</a>
+            <a href="#helpers">Internal Helpers</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>PydanticLexicon</h1>
+            <p class="subtitle">A persistent storage implementation using Pydantic for validation and JSON for serialization.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                The <code>PydanticLexicon</code> class is an implementation of the <code>Lexicon</code> interface. 
+                It provides a robust way to store <strong>Entries</strong> and <strong>Relations</strong> in a local JSON file, 
+                leveraging Pydantic's <code>BaseModel</code> for automatic data validation and date serialization.
+            </p>
+            <div class="method-box">
+                <strong>Storage Strategy:</strong> Single-file JSON database (<code>codex_pydantic.json</code>) 
+                with full schema validation on every read/write operation.
+            </div>
+        </section>
+
+        <section id="schemas">
+            <h2>Data Schemas</h2>
+            <p>The following Pydantic models define the structure of the storage:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Schema Name</th>
+                        <th>Description</th>
+                        <th>Fields</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>EntrySchema</code></td>
+                        <td>Represents a single content entry.</td>
+                        <td>id, title, content, tags, category, timestamps, metadata</td>
+                    </tr>
+                    <tr>
+                        <td><code>RelationSchema</code></td>
+                        <td>Defines a connection between two entries.</td>
+                        <td>from_id, to_id, connection_type, metadata</td>
+                    </tr>
+                    <tr>
+                        <td><code>CodexStorageSchema</code></td>
+                        <td>The root container for the JSON file.</td>
+                        <td>entries (Dict), relations (List)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="methods">
+            <h2>Lexicon Implementation</h2>
+            
+            <div class="method-card">
+                <h3>save(entry: Entry)</h3>
+                <p>Validates and persists a core Entry dataclass into the JSON storage. Converts the dataclass to a Pydantic model automatically.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_id(entry_id: str) -> Optional[Entry]</h3>
+                <p>Retrieves a specific entry by its unique ID. Returns <code>None</code> if the entry does not exist.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>save_relation(relation: Relation)</h3>
+                <p>Stores a new relationship between entries. Prevents duplicate relations by checking existence before writing.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete(entry_id: str) -> bool</h3>
+                <p>Removes an entry and performs <strong>cascade deletion</strong> on all associated relations (incoming and outgoing).</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_tag(tag: str) -> List[Entry]</h3>
+                <p>Filters and returns all entries that contain the specified tag in their metadata.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_date_range(start, end) -> List[Entry]</h3>
+                <p>Returns entries created within the specified <code>datetime</code> range.</p>
+            </div>
+        </section>
+
+        <section id="helpers">
+            <h2>Internal Helpers</h2>
+            <p>These private methods handle the communication between the Core Dataclasses and the Pydantic Storage layer.</p>
+            
+            <div class="method-box">
+                <code>_read_data()</code>: Loads the JSON file and parses it through <code>CodexStorageSchema</code>.
+            </div>
+            <br>
+            <div class="method-box">
+                <code>_write_data()</code>: Uses <code>model_dump_json()</code> to save the state, ensuring <code>datetime</code> objects are ISO-formatted.
+            </div>
+            <br>
+            <div class="method-box">
+                <code>_map_to_core_entry()</code>: Converts a Pydantic <code>EntrySchema</code> back into a domain <code>Entry</code> dataclass.
+            </div>
+        </section>
+    </main>
+</body>
+</html>

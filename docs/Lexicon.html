@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexicon Interface Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="repository">
+
+    <aside class="sidebar">
+        <h2>Architecture</h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#persistence">Persistence Methods</a>
+            <a href="#query">Query Methods</a>
+            <a href="#relationship">Relationship Management</a>
+            <a href="#deletion">Deletion & Integrity</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>Lexicon</h1>
+            <p class="subtitle">Persistence Port (Repository Pattern) for the Codex System.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                The <code>Lexicon</code> class is an <strong>Abstract Base Class (ABC)</strong> that defines the formal contract for 
+                database engines. Any storage adapter (JSON, SQL, NoSQL) must implement these methods to ensure 
+                compatibility with the Codex core logic.
+            </p>
+            <div class="method-box">
+                <strong>Key Responsibility:</strong> Decouple the domain logic from specific storage implementations, 
+                ensuring that data structures like <code>Entry</code> and <code>Relation</code> are handled consistently.
+            </div>
+        </section>
+
+        <section id="persistence">
+            <h2>Persistence & Storage</h2>
+            
+            <div class="method-card">
+                <h3>save(entry: Entry) -> None</h3>
+                <p>Saves or updates an entry. Performs an <strong>Upsert</strong>: if the ID already exists, the entry is overwritten. 
+                Adapters must ensure dataclass types are mapped correctly to the storage engine.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>save_relation(relation: Relation) -> None</h3>
+                <p>Persists a link between two entries. The implementation must prevent exact duplicates (same origin, destination, and type) 
+                if the database doesn't handle unique constraints natively.</p>
+            </div>
+        </section>
+
+        <section id="query">
+            <h2>Query & Retrieval</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>get_by_id(id)</code></td>
+                        <td>Retrieves a unique entry by its UUID. Primary method for direct lookups.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_by_ids(list)</code></td>
+                        <td><strong>Batch Query:</strong> Retrieves multiple entries. Must be optimized to avoid N+1 query issues.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_by_title(str)</code></td>
+                        <td>Exact title match. Used to validate uniqueness before creation.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_by_tag(str)</code></td>
+                        <td>Returns entries containing the specific tag in their tags list.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_by_category(str)</code></td>
+                        <td>Taxonomic filtering based on the specified category string.</td>
+                    </tr>
+                    <tr>
+                        <td><code>get_by_date_range(s, e)</code></td>
+                        <td>Chronological search for entries created between <code>start</code> and <code>end</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="relationship">
+            <h2>Graph Navigation</h2>
+            
+            <div class="method-card">
+                <h3>get_in_relations(entry_id) -> List[Relation]</h3>
+                <p>Retrieves incoming connections where <code>to_id</code> matches the provided ID. Returns an empty list if no matches are found.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_out_relations(entry_id) -> List[Relation]</h3>
+                <p>Retrieves outgoing connections where <code>from_id</code> matches. Essential for graph traversal from a source node.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>check_relation(relation) -> bool</h3>
+                <p>Verifies the existence of a link. Used for logical validation before attempting a save operation.</p>
+            </div>
+        </section>
+
+        <section id="deletion">
+            <h2>Deletion & Integrity</h2>
+
+            <div class="method-card">
+                <h3>delete(entry_id: str) -> bool</h3>
+                <p><strong>Atomic Deletion (Manual Cascade):</strong> The adapter MUST ensure that when an entry is deleted:
+                <br>1. All <code>out_relations</code> are removed.
+                <br>2. All <code>in_relations</code> are removed.
+                <br>3. The <code>Entry</code> object itself is deleted.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete_relation(from_id, to_id, type) -> bool</h3>
+                <p>Removes a specific link. If <code>connection_type</code> is omitted, it removes any relationship between the two IDs.</p>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

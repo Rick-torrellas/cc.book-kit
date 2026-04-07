@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORJSONLexicon Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Documentation</h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#initialization">Initialization</a>
+            <a href="#persistence">Core Persistence</a>
+            <a href="#entry-methods">Entry Management</a>
+            <a href="#relation-methods">Relations</a>
+            <a href="#search-methods">Search & Filters</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header id="repository">
+            <h1>ORJSONLexicon</h1>
+            <p class="subtitle">Ultra-high performance persistence adapter using orjson for native serialization.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <code>ORJSONLexicon</code> class is an implementation of the <code>Lexicon</code> interface. It optimizes data storage by leveraging <code>orjson</code>, providing faster serialization of <code>datetime</code> objects and UUIDs compared to standard JSON libraries.</p>
+            <div class="method-box">
+                <strong>Key Feature:</strong> Uses binary mode (<code>wb/rb</code>) to maximize I/O throughput with <code>orjson.dumps</code> and <code>orjson.loads</code>.
+            </div>
+        </section>
+
+        <section id="initialization">
+            <h2>Initialization</h2>
+            <div class="method-card">
+                <h3>__init__(storage_path: str = "codex_data.json")</h3>
+                <p>Initializes the storage path and ensures the JSON structure is ready for use.</p>
+            </div>
+        </section>
+
+        <section id="persistence">
+            <h2>Core Persistence Methods</h2>
+            <p>These internal methods handle the low-level communication with the file system.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>_read_data()</code></td>
+                        <td>Loads the graph structure using <code>orjson.loads</code>. Returns a dictionary.</td>
+                    </tr>
+                    <tr>
+                        <td><code>_write_data(data: Dict)</code></td>
+                        <td>Saves data with <code>OPT_INDENT_2</code> for readability and <code>OPT_UTC_Z</code> for ISO standards.</td>
+                    </tr>
+                    <tr>
+                        <td><code>_initialize_storage()</code></td>
+                        <td>Creates a default <code>{"entries": {}, "relations": []}</code> structure if the file is missing.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="entry-methods">
+            <h2>Entry Management</h2>
+            
+            <div class="method-card">
+                <h3>save(entry: Entry) -> None</h3>
+                <p>Persists an Entry object. Automatically updates the <code>updated_at</code> timestamp and maps attributes to the storage schema.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_id(entry_id: str) -> Optional[Entry]</h3>
+                <p>Retrieves a single entry by its unique identifier. Returns <code>None</code> if not found.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>delete(entry_id: str) -> bool</h3>
+                <p>Removes an entry and <strong>all associated relations</strong> (cascade delete). Returns <code>True</code> if successful.</p>
+            </div>
+        </section>
+
+        <section id="relation-methods">
+            <h2>Relation Management</h2>
+            <p>Handles the connections between different entries in the graph.</p>
+
+            <div class="method-card">
+                <h3>save_relation(relation: Relation)</h3>
+                <p>Records a connection between two entries. Checks for existing duplicates before appending.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_in_relations(entry_id: str) -> List[Relation]</h3>
+                <p>Returns a list of relations where the specified ID is the <strong>destination</strong>.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_out_relations(entry_id: str) -> List[Relation

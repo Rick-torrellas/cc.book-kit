@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONLexicon Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Documentation</h2>
+        <nav>
+            <a href="#overview" class="active">Overview</a>
+            <a href="#initialization">Initialization</a>
+            <a href="#persistence">Persistence</a>
+            <a href="#retrieval">Data Retrieval</a>
+            <a href="#relations">Relation Management</a>
+            <a href="#cleanup">Deletion</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header id="repository">
+            <h1>JSONLexicon</h1>
+            <p class="subtitle">A local JSON-based implementation of the Lexicon interface for data persistence.</p>
+        </header>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <code>JSONLexicon</code> class provides a lightweight, file-based storage solution using the standard <code>json</code> library. It implements the abstract <code>Lexicon</code> interface to manage <code>Entry</code> and <code>Relation</code> objects with atomic-like updates via file rewrites.</p>
+            
+            <div class="method-box">
+                <strong>Storage Format:</strong> Data is stored in a flat dictionary structure containing two main keys: <code>"entries"</code> (indexed by ID) and <code>"relations"</code> (a list of connection objects).
+            </div>
+        </section>
+
+        <section id="initialization">
+            <h2>Initialization</h2>
+            <div class="method-card">
+                <h3>__init__(storage_path: str = "codex_data.json")</h3>
+                <p>Initializes the lexicon. If the specified JSON file does not exist, it triggers <code>_initialize_storage()</code> to create a template file.</p>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>storage_path</code></td>
+                        <td>String / Path</td>
+                        <td>"codex_data.json"</td>
+                        <td>The filesystem path where the JSON data will be stored.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="persistence">
+            <h2>Persistence Methods</h2>
+            <div class="method-card">
+                <h3>save(entry: Entry) -> None</h3>
+                <p>Serializes an <code>Entry</code> dataclass into a JSON-compatible dictionary and saves it. Handles ISO format conversion for datetime objects.</p>
+            </div>
+            <div class="method-card">
+                <h3>save_relation(relation: Relation) -> None</h3>
+                <p>Appends a new relationship between entries. It includes a safety check to prevent exact duplicate relations from being stored.</p>
+            </div>
+        </section>
+
+        <section id="retrieval">
+            <h2>Data Retrieval</h2>
+            <p>Methods designed to query the stored entries based on different attributes.</p>
+            
+            <div class="method-card">
+                <h3>get_by_id(entry_id: str) -> Optional[Entry]</h3>
+                <p>Fetches a single entry by its unique identifier. Returns <code>None</code> if not found.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_tag(tag: str) -> List[Entry]</h3>
+                <p>Filters and returns all entries that contain the specified tag in their metadata.</p>
+            </div>
+
+            <div class="method-card">
+                <h3>get_by_date_range(start: datetime, end: datetime) -> List[Entry]</h3>
+                <p>Returns entries created between the <code>start</code> and <code>end</code> timestamps (inclusive).</p>
+            </div>
+        </section>
+
+        <section id="relations">
+            <h2>Relation Management</h2>
+            <div class="method-card">
+                <h3>get_out_relations(entry_id: str) -> List[Relation]</h3>
+                <p>Retrieves all relations where the given ID is the <code>from_id</code> (outgoing connections).</p>
+            </div>
+            <div class="method-card">
+                <h3>get_in_relations(entry_id: str) -> List[Relation]</h3>
+                <p>Retrieves all relations where the given ID is the <code>to_id</code> (incoming connections).</p>
+            </div>
+        </section>
+
+        <section id="cleanup">
+            <h2>Deletion & Integrity</h2>
+            <div class="method-card">
+                <h3>delete(entry_id: str) -> bool</h3>
+                <p>Removes an entry. <strong>Note:</strong> This method performs a cascade-style cleanup, removing all relations associated with this ID to prevent orphaned links.</p>
+            </div>
+            <div class="method-card">
+                <h3>delete_relation(from_id, to_id, type) -> bool</h3>
+                <p>Removes a specific relation. If <code>connection_type</code> is omitted, all relations between the two nodes are removed.</p>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
