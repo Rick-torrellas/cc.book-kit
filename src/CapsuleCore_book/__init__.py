@@ -1,5 +1,5 @@
 from .core import Entry, Relation, Codex, CodexPolicy
-from .capsule import Lexicon, JSONLexicon, UJSONLexicon
+from .capsule import Lexicon, JSONLexicon, UJSONLexicon, ORJSONLexicon, PydanticLexicon
 
 
 __all__ = [
@@ -9,5 +9,7 @@ __all__ = [
     "Lexicon",
     "JSONLexicon",
     "UJSONLexicon",
+    "ORJSONLexicon",
+    "PydanticLexicon",
     "CodexPolicy",
 ]
