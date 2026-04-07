@@ -1,5 +1,13 @@
 # Capsule Core book
 
+## Installation
+
+Ensure you have your environment ready (recommended to use uv or pip):
+
+```bash
+pip install capsulecore-book
+```
+
 ## usage
 
 ```python
