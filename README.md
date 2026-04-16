@@ -1,4 +1,4 @@
-# Capsule Core book
+# cc-book-kit
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Version](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Rick-torrellas/CapsuleCore-book/badges/version.json)
