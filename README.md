@@ -7,6 +7,7 @@
 [![Download](https://img.shields.io/github/v/release/Rick-torrellas/CapsuleCore-book?label=Download&color=orange)](https://github.com/Rick-torrellas/CapsuleCore-book/releases)
 [![docs](https://img.shields.io/badge/docs-read_now-blue?style=flat-square)](https://rick-torrellas.github.io/cc-book-kit/)
 [![Ask DeepWiki](https://img.shields.io/badge/DeepWiki-Documentation-blue?logo=gitbook&logoColor=white)](https://deepwiki.com/Rick-torrellas/CapsuleCore-book)
+[![PyPI](https://img.shields.io/badge/pypi-v1.0.0-blue.svg)](https://pypi.org/project/cc.book-kit/)
 
 💊⚛️
 
