@@ -2,8 +2,8 @@ import pytest
 import orjson
 from datetime import datetime, timedelta
 
-from CapsuleCore_book.core import Entry, Relation
-from CapsuleCore_book.capsule import ORJSONLexicon
+from cc_book_kit.core import Entry, Relation
+from cc_book_kit.capsule import ORJSONLexicon
 
 
 @pytest.fixture

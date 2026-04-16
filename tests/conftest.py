@@ -1,8 +1,8 @@
 import pytest
 from typing import List, Optional
 from datetime import datetime
-from CapsuleCore_book.capsule import Lexicon
-from CapsuleCore_book.core import Entry, Relation
+from cc_book_kit.capsule import Lexicon
+from cc_book_kit.core import Entry, Relation
 
 
 class InMemoryLexicon(Lexicon):
@@ -87,6 +87,6 @@ def mock_repo():
 
 @pytest.fixture
 def codex(mock_repo):
-    from CapsuleCore_book.core import Codex
+    from cc_book_kit.core import Codex
 
     return Codex(repository=mock_repo)

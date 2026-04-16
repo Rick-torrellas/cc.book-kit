@@ -1,7 +1,4 @@
-from CapsuleCore_book.core import Codex
-
-
-def test_group_by_front_relations_success(codex: Codex, mock_repo):
+def test_group_by_front_relations_success(codex, mock_repo):
     """
     Debe retornar todas las entradas a las que apunta la entrada origen.
     Si A -> B y A -> C, entonces groupBy_frontRelations(A) debe retornar [B, C].
@@ -38,7 +35,7 @@ def test_group_by_front_relations_success(codex: Codex, mock_repo):
     )  # No debe incluirse a sí misma a menos que sea autorreferencia
 
 
-def test_group_by_front_relations_empty(codex: Codex, mock_repo):
+def test_group_by_front_relations_empty(codex, mock_repo):
     """Debe retornar una lista vacía si la nota no apunta a ninguna otra."""
     entry = codex.create_entry(title="Nota Final", content="No apunto a nadie")
 

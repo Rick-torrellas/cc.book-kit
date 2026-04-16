@@ -1,10 +1,7 @@
 import pytest
 
-from CapsuleCore_book.core import Codex
-from CapsuleCore_book.capsule import Lexicon
 
-
-def test_process_field_change_title_success(codex: Codex, mock_repo: Lexicon):
+def test_process_field_change_title_success(codex, mock_repo):
     # Setup: Crear una entrada original
     entry = codex.create_entry(title="Titulo Original", content="Contenido")
 
@@ -16,7 +13,7 @@ def test_process_field_change_title_success(codex: Codex, mock_repo: Lexicon):
     assert result == "TITULO NUEVO"
 
 
-def test_process_field_change_title_no_change(codex: Codex):
+def test_process_field_change_title_no_change(codex):
     entry = codex.create_entry(title="Igual", content="Contenido")
 
     # Test: Intentar cambiar al mismo título
@@ -26,7 +23,7 @@ def test_process_field_change_title_no_change(codex: Codex):
     assert result is None
 
 
-def test_process_field_change_tags_logic(codex: Codex):
+def test_process_field_change_tags_logic(codex):
     entry = codex.create_entry(title="Tags Test", content="...", tags=["python", "ai"])
 
     # Test 1: Cambiar el orden o duplicar (la política debería normalizar)
@@ -46,7 +43,7 @@ def test_process_field_change_tags_logic(codex: Codex):
 @pytest.mark.skip(
     reason="TODO: Implementar lógica de inmutabilidad para metadata y testear que se crea una nueva referencia"
 )
-def test_process_field_change_metadata_immutability(codex: Codex):
+def test_process_field_change_metadata_immutability(codex):
     original_meta = {"key": "value"}
     entry = codex.create_entry(title="Meta Test", content="...", metadata=original_meta)
 
@@ -58,7 +55,7 @@ def test_process_field_change_metadata_immutability(codex: Codex):
     assert result is not new_meta  # No deben ser el mismo objeto en memoria
 
 
-def test_process_field_change_category(codex: Codex):
+def test_process_field_change_category(codex):
     entry = codex.create_entry(title="Cat Test", content="...", category="General")
 
     # Test: La política por defecto hace Capitalize y Strip
@@ -67,7 +64,7 @@ def test_process_field_change_category(codex: Codex):
     assert result == "Proyectos"
 
 
-def test_process_field_change_ignore_unknown_or_immutable(codex: Codex):
+def test_process_field_change_ignore_unknown_or_immutable(codex):
     entry = codex.create_entry(title="Immutable Test", content="...")
 
     # Aunque edit_entry filtra esto, _process_field_change debe manejar

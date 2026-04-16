@@ -1,8 +1,8 @@
 import pytest
 import os
 from datetime import datetime, timedelta
-from CapsuleCore_book.core import Entry, Relation
-from CapsuleCore_book.capsule import JSONLexicon
+from cc_book_kit.core import Entry, Relation
+from cc_book_kit.capsule import JSONLexicon
 
 # --- Fixtures ---
 

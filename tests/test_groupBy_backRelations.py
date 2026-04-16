@@ -1,7 +1,4 @@
-from CapsuleCore_book.core import Codex
-
-
-def test_group_by_back_relations_success(codex: Codex, mock_repo):
+def test_group_by_back_relations_success(codex, mock_repo):
     """
     Debe retornar todas las entradas que apuntan HACIA la entrada objetivo.
     Si A -> B y C -> B, entonces groupBy_backRelations(B) debe retornar [A, C].
@@ -42,7 +39,7 @@ def test_group_by_back_relations_success(codex: Codex, mock_repo):
     assert "Nota D" not in titles
 
 
-def test_group_by_back_relations_empty(codex: Codex, mock_repo):
+def test_group_by_back_relations_empty(codex, mock_repo):
     """Debe retornar una lista vacía si nadie apunta a la entrada."""
     entry = codex.create_entry(title="Nota Solitaria", content="Nadie me quiere")
 

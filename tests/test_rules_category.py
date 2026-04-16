@@ -1,5 +1,5 @@
 import pytest
-from CapsuleCore_book.core import Codex, CodexPolicy
+from cc_book_kit.core import Codex, CodexPolicy
 
 
 def test_rules_category_default_value(codex):

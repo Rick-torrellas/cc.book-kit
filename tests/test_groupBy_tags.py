@@ -1,4 +1,4 @@
-from CapsuleCore_book.core import Entry
+from cc_book_kit.core import Entry
 
 
 def test_group_by_tags_success(codex):

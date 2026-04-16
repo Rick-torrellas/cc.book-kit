@@ -1,4 +1,4 @@
-from CapsuleCore_book.core import CodexPolicy
+from cc_book_kit.core import CodexPolicy
 
 
 def test_rules_search_category_basic(codex):
@@ -21,7 +21,7 @@ def test_rules_search_category_max_length(codex, mock_repo):
     """Verifica que respete el truncado definido en la política."""
     # Creamos un Codex con una política de longitud muy corta (5 caracteres)
     short_policy = CodexPolicy(category_max_length=5, category_capitalize=False)
-    from CapsuleCore_book.core import Codex
+    from cc_book_kit.core import Codex
 
     custom_codex = Codex(repository=mock_repo, policy=short_policy)
 
@@ -33,7 +33,7 @@ def test_rules_search_category_max_length(codex, mock_repo):
 def test_rules_search_category_no_capitalize(codex, mock_repo):
     """Verifica el comportamiento cuando la capitalización está desactivada."""
     no_cap_policy = CodexPolicy(category_capitalize=False)
-    from CapsuleCore_book.core import Codex
+    from cc_book_kit.core import Codex
 
     custom_codex = Codex(repository=mock_repo, policy=no_cap_policy)
 
@@ -44,7 +44,7 @@ def test_rules_search_category_no_capitalize(codex, mock_repo):
 def test_rules_search_category_no_strip(codex, mock_repo):
     """Verifica el comportamiento cuando el strip está desactivado."""
     no_strip_policy = CodexPolicy(category_strip=False, category_capitalize=False)
-    from CapsuleCore_book.core import Codex
+    from cc_book_kit.core import Codex
 
     custom_codex = Codex(repository=mock_repo, policy=no_strip_policy)
 

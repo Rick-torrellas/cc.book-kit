@@ -2,8 +2,8 @@ import pytest
 import ujson
 from datetime import datetime, timedelta
 
-from CapsuleCore_book.core import Entry, Relation
-from CapsuleCore_book.capsule.UJSONLexicon import UJSONLexicon
+from cc_book_kit.core import Entry, Relation
+from cc_book_kit.capsule.UJSONLexicon import UJSONLexicon
 
 
 @pytest.fixture

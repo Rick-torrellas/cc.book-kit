@@ -1,7 +1,4 @@
-from CapsuleCore_book.core import Codex
-
-
-def test_group_by_relations_bidirectional_and_unique(codex: Codex, mock_repo):
+def test_group_by_relations_bidirectional_and_unique(codex, mock_repo):
     """
     Verifica que groupBy_relations encuentre conexiones en ambos sentidos
     y elimine duplicados si existe más de una relación entre los mismos IDs.

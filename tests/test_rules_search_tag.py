@@ -1,4 +1,4 @@
-from CapsuleCore_book.core import Codex, CodexPolicy
+from cc_book_kit.core import Codex, CodexPolicy
 
 
 def test_rules_search_tag_empty_input(codex):

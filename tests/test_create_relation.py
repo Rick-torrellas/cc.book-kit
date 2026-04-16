@@ -1,5 +1,5 @@
 import pytest
-from CapsuleCore_book.core import Relation
+from cc_book_kit.core import Relation
 
 
 def test_create_relation_success(codex, mock_repo):

@@ -1,5 +1,5 @@
 import pytest
-from CapsuleCore_book.core import Entry
+from cc_book_kit.core import Entry
 
 
 def test_create_entry_success(codex):

@@ -2,8 +2,8 @@ import pytest
 from datetime import datetime
 
 # Asumiendo la estructura de carpetas de tu proyecto
-from CapsuleCore_book.core import Entry, Relation
-from CapsuleCore_book.capsule.PydanticLexicon import PydanticLexicon
+from cc_book_kit.core import Entry, Relation
+from cc_book_kit.capsule.PydanticLexicon import PydanticLexicon
 
 
 @pytest.fixture
